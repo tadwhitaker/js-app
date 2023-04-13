@@ -41,7 +41,10 @@ function loadStaticData (file: string) {
   const filePath = path.resolve('./data/static/' + file + '.yml')
   return readFile(filePath, 'utf8')
     .then(safeLoad)
-    .catch(() => logger.error('Could not open file: "' + filePath + '"'))
+    .catch(() => {
+      console.log('Could not open file: "' + filePath + '"');
+      logger.error('Could not open file: "' + filePath + '"');
+    })
 }
 
 module.exports = async () => {
@@ -98,6 +101,7 @@ async function createChallenges () {
           codingChallengeStatus: 0
         })
       } catch (err) {
+        console.log(`Could not insert Challenge ${name}: ${utils.getErrorMessage(err)}`);
         logger.error(`Could not insert Challenge ${name}: ${utils.getErrorMessage(err)}`)
       }
     })
@@ -128,6 +132,7 @@ async function createUsers () {
         if (address) await createAddresses(user.id, address)
         if (card) await createCards(user.id, card)
       } catch (err) {
+        console.log(`Could not insert User ${key}: ${utils.getErrorMessage(err)}`);
         logger.error(`Could not insert User ${key}: ${utils.getErrorMessage(err)}`)
       }
     })

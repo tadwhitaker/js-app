@@ -26,6 +26,7 @@ async function login ({ email, password, totpSecret }: { email: string, password
       if (res.json?.type && res.json.status === 'totp_token_required') {
         return res
       }
+      console.log('failed to login');
       throw new Error(`Failed to login '${email}'`)
     })
 
@@ -53,6 +54,7 @@ async function register ({ email, password, totpSecret }: { email: string, passw
       securityQuestion: null,
       securityAnswer: null
     }).catch(() => {
+      console.log(`Failed to register '${email}'`)
       throw new Error(`Failed to register '${email}'`)
     })
 
