@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+import * as $VM from 'vm2'
 import { UntypedFormControl, Validators } from '@angular/forms'
 import { Component, NgZone, OnInit } from '@angular/core'
 import { ConfigurationService } from '../Services/configuration.service'
