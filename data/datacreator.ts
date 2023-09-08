@@ -27,6 +27,7 @@ const utils = require('../lib/utils')
 const mongodb = require('./mongodb')
 const security = require('../lib/insecurity')
 const logger = require('../lib/logger')
+const { Model } = require('@sequelize/sequelize')
 
 const fs = require('fs')
 const path = require('path')
