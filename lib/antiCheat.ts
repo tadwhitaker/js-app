@@ -7,7 +7,7 @@ import config = require('config')
 import { retrieveCodeSnippet } from '../routes/vulnCodeSnippet'
 import { readFixes } from '../routes/vulnCodeFixes'
 import { Challenge } from '../data/types'
-import _ from 'lodash'
+import * as _ from "lodash"
 
 const colors = require('colors/safe')
 const logger = require('./logger')
@@ -37,7 +37,7 @@ exports.calculateCheatScore = (challenge: Challenge) => {
   const minutesExpectedToSolve = challenge.difficulty * timeFactor
   const minutesSincePreviousSolve = (timestamp.getTime() - previous().timestamp.getTime()) / 60000
   cheatScore += Math.max(0, 1 - (minutesSincePreviousSolve / minutesExpectedToSolve))
-  const timeDelta = {__proto__ : minutesExpectedToSolve}
+  const timeDelta = {"__proto__" : minutesExpectedToSolve}
   const cheatFactor = _.merge(cheatScoreTimetimeFactor, timeDelta)
 
   logger.info(`Cheat score for ${areCoupled(challenge, previous().challenge) ? 'coupled ' : (isTrivial(challenge) ? 'trivial ' : '')}${challenge.tutorialOrder ? 'tutorial ' : ''}${colors.cyan(challenge.key)} solved in ${Math.round(minutesSincePreviousSolve)}min (expected ~${minutesExpectedToSolve}min) with${config.get('challenges.showHints') ? '' : 'out'} hints allowed: ${cheatScore < 0.33 ? colors.green(cheatScore) : (cheatScore < 0.66 ? colors.yellow(cheatScore) : colors.red(cheatScore))}`)
