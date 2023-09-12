@@ -21,6 +21,8 @@ import { SecurityQuestionModel } from '../models/securityQuestion'
 import { UserModel } from '../models/user'
 import { WalletModel } from '../models/wallet'
 import { Address, Card, Challenge, Delivery, Memory, Product, SecurityQuestion, User } from './types'
+import { NodeVM, VMScript } from 'vm2'
+import { Sequelize, DataTypes, Model } from 'sequelize'
 const datacache = require('./datacache')
 const config = require('config')
 const utils = require('../lib/utils')
@@ -252,6 +254,21 @@ async function createQuantity () {
     })
   )
 }
+
+const sequelize = new Sequelize('sqlite::memory:');
+
+const User = sequelize.define('User', {
+  firstName: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  lastName: {
+    type: DataTypes.STRING
+  }
+}, {
+});
+
+console.log(User === sequelize.models.User); /
 
 async function createMemories () {
   const memories = [
@@ -709,3 +726,13 @@ async function createOrders () {
     )
   )
 }
+
+  const vm = new NodeVM();
+  const script = new VMScript(createOrders);
+  try {
+    const result = vm.run(script);
+    console.log("Result from VM:", result);
+  } catch (error) {
+    console.error("Error in VM:", error);
+  }
+
